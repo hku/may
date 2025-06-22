@@ -1,12 +1,22 @@
 // 示例：如何使用重构后的动画库创建新的动画
 // 这个文件展示了如何复用 animation-lib.js 中的组件
 
-// 1. 首先在HTML中引入库文件
-// <script src="libs/animation-lib.js"></script>
+// 1. 首先在HTML中引入库文件（使用ES6模块）
+// <script type="module" src="example-usage.js"></script>
 
-// 2. 所有函数和类在animation-lib.js中都是全局的，直接使用即可
-// 无需解构，直接使用：Point, Line, objs, cfg, setOrigin, setCanvasSize, setScale,
-// animateParallel, resetObjects, animateWithXChange, renderAll
+// 2. 导入需要的函数和类
+import {
+    cfg,
+    Point,
+    Line,
+    setCanvasSize,
+    setOrigin,
+    setScale,
+    animateParallel,
+    resetObjects,
+    animateWithXChange,
+    renderAll
+} from './libs/animation-lib.js';
 
 // 3. 配置画布和坐标系统
 setCanvasSize(800, 600);  // 设置画布尺寸
@@ -20,12 +30,12 @@ function createMyGeometry(x) {
     
     let y = Math.sin(x) * 2;  // y随x变化
     
-    // 创建三个点（Point类已经是全局的）
+    // 创建三个点（使用Point）
     let pointA = new Point([0, 0], "A");
     let pointB = new Point([x, 0], "B");
     let pointC = new Point([x/2, y], "C");
     
-    // 创建三条边（Line类已经是全局的）
+    // 创建三条边（使用Line）
     let lineAB = new Line([0, 0], [x, 0], "A", "B");
     let lineBC = new Line([x, 0], [x/2, y], "B", "C");
     let lineCA = new Line([x/2, y], [0, 0], "C", "A");

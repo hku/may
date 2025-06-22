@@ -1,5 +1,17 @@
 // 具体的动画逻辑 - 使用AnimationLib中的通用组件
-// 所有函数和类在animation-lib.js中都是全局的，直接使用即可
+// 导入需要的函数和类
+const {
+    cfg,
+    Line,
+    setOrigin,
+    animateParallel,
+    resetObjects,
+    animateWithXChange,
+    recordParallelAnimation,
+    recordSingleAnimation,
+    recordXChangeSequence,
+    renderAll
+} = May;
 
 // 设置坐标原点
 setOrigin(3*cfg.width/16, 5*cfg.height/8);
@@ -200,6 +212,15 @@ window.addEventListener('load', function() {
     });
     
     recordButton.addEventListener('click', function() {
+        resetObjects();
         recordAnimation();
+    });
+    
+    // 示例动画按钮
+    const playMyAnimationButton = document.getElementById('playMyAnimation');
+    playMyAnimationButton.addEventListener('click', function() {
+        resetObjects();
+        // 这里可以添加示例动画逻辑
+        console.log('示例动画功能待实现');
     });
 });

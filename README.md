@@ -1,12 +1,12 @@
 # 动画库重构说明
 
 ## 重构目标
-将原来的 `sketch.js` 文件重构为可复用的组件库，使得下次构建新动画时能够最大程度复用通用代码。
+将原来的 `sketch.js` 文件重构为可复用的组件库，使得下次构建新动画时能够最大程度复用通用代码。使用ES6模块方式避免全局变量污染。
 
 ## 文件结构
 
 ### 1. `libs/animation-lib.js` - 通用动画库
-包含所有可复用的组件和函数：
+包含所有可复用的组件和函数，使用ES6模块命名导出：
 
 #### 核心类
 - **Point类**: 可复用的点对象，支持移动、旋转等动画
@@ -54,19 +54,32 @@
 
 ### 创建新动画的步骤
 
-1. **引入库文件**
+1. **在HTML中设置模块类型**
    ```html
-   <script src="libs/animation-lib.js"></script>
+   <script type="module" src="your-animation.js"></script>
    ```
 
-2. **获取需要的组件**
+2. **导入需要的函数和类**
    ```javascript
-   const { Point, Line, setOrigin, animateParallel, resetObjects, animateWithXChange, renderAll } = window.AnimationLib;
+   import {
+       cfg,
+       Point,
+       Line,
+       setOrigin,
+       setCanvasSize,
+       setScale,
+       animateParallel,
+       resetObjects,
+       animateWithXChange,
+       renderAll
+   } from './libs/animation-lib.js';
    ```
 
 3. **配置画布和坐标系统**
    ```javascript
    setOrigin(400, 300);  // 设置坐标原点
+   setCanvasSize(800, 600);  // 设置画布尺寸
+   setScale(50);  // 设置缩放比例
    ```
 
 4. **定义几何图形创建函数**
@@ -124,6 +137,8 @@
 2. **易于维护**: 通用代码集中在一个文件中，便于维护和更新
 3. **快速开发**: 新动画只需要关注具体的几何图形和动画逻辑
 4. **一致性**: 所有动画使用相同的组件，保证了一致的用户体验
+5. **模块化**: 使用ES6模块避免全局变量污染，更好的代码组织
+6. **灵活导入**: 支持解构导入，只导入需要的函数和类
 
 ## 示例
 
@@ -131,7 +146,8 @@
 
 ## 注意事项
 
-1. 确保在HTML中正确引入 `animation-lib.js`
-2. 使用 `window.AnimationLib` 来访问库中的组件和函数
-3. 每个新动画文件只需要关注具体的几何图形定义和动画逻辑
-4. 所有通用的动画功能都已经在库中实现，无需重复编写 
+1. 确保在HTML中使用 `type="module"` 属性
+2. 使用解构导入语法 `import { cfg, Line, ... } from './libs/animation-lib.js'` 导入需要的函数和类
+3. 所有函数和类都可以直接使用，如 `new Point()`、`new Line()`、`animateParallel()` 等
+4. 每个新动画文件只需要关注具体的几何图形定义和动画逻辑
+5. 所有通用的动画功能都已经在库中实现，无需重复编写 
